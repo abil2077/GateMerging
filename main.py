@@ -4,7 +4,7 @@ import copy
 import math
 alphabet = list(string.ascii_lowercase)
 # Finds the number of qubits
-txtFile = input("file name: ")
+txtFile = input("File name: ")
 file_in = open(f"{txtFile}copycopy", "r+")
 lines = file_in.readlines()
 qbitnum = 0
@@ -18,7 +18,7 @@ for line in lines:
 # Creates lists for all qubits
 assert qbitnum <= 26
 allGates = {var: [] for var in string.ascii_lowercase[:qbitnum]}
-
+beforeGates = {var: [] for var in string.ascii_lowercase[:qbitnum]}
 # Finds the start line
 start = 0
 smth = 0
@@ -78,6 +78,7 @@ for gate in range(len(onlyGates)):
         for element in range(qbitnum):
             if letter == alphabet[element]:
                 allGates[alphabet[element]].append(gateName)
+                beforeGates[alphabet[element]].append(gateName)
 
     if len(braket) == 2:
         var1 = source[braket[0] - 1]
@@ -88,9 +89,13 @@ for gate in range(len(onlyGates)):
             gateName = gateName + source[idx]
         for element in range(qbitnum):
             if var1 == alphabet[element]:
-                allGates[alphabet[element]].append("target")
-            if var2 == alphabet[element]:
                 allGates[alphabet[element]].append("control")
+                beforeGates[alphabet[element]].append("control")
+            if var2 == alphabet[element]:
+                allGates[alphabet[element]].append("target")
+                beforeGates[alphabet[element]].append("target")
+
+
 
 # Step 2: array of all sqg's by qubits
 singleGates = {var: [] for var in string.ascii_lowercase[:qbitnum]}
@@ -342,3 +347,5 @@ lenBefore = lenBefore + math.ceil(twoQubitGates/2)
 lenAfter = math.ceil(twoQubitGates/2) + oneQubitGates
 
 print("Before", lenBefore, ", after", lenAfter)
+print("Before ", beforeGates)
+print("After ", allGatesNum)
